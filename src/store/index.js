@@ -1,5 +1,6 @@
 import Vuex from "vuex"
 import Vue from "vue"
+import shop from "../api/shop";
 
 Vue.use(Vuex);
 
@@ -18,12 +19,31 @@ export default new Vuex.Store({
 
   actions: { // Methods
     // Actions could be complex but never change the state
-    fetchProducts (){
+    fetchProducts ({commit}){  // The context object exposes the same set of methods and properties as the store object
       // make the call to the api
       // We do not change the state here
       // If we want to update the state after the api call, we should call the setProducts mutation
+      // context.state
+      // context.mutation
 
-    }
+      return new Promise((resolve, reject) => {
+        shop.getProducts( products => {
+          commit('setProducts', products)
+          resolve()
+        })
+      });
+
+    },
+    // Actions are also responsible for the logic of when a mutation should be fired
+    // e. g, if a user add an item to the cart we will call an action
+    // addToCart(context, product){
+    //   if(product.inventory > 0){
+    //     context.commit('pushProductToCart', product)
+    //   }else{
+    //     // Show out of stock message
+    //   }
+    // }
+
   },
 
   mutations: { // Are responsible of setting and updating the state

@@ -11,7 +11,7 @@
 
 <script>
   // import shop from "../api/shop.js"
-  import store from "../store/index.js"
+  // import store from "../store/index.js"
   export default {
     data(){
       return{
@@ -20,7 +20,7 @@
     },
     computed: {
       products () {
-        return store.getters.availableProducts
+        return this.$store.getters.availableProducts
       }
     },
     created() {
@@ -32,7 +32,7 @@
 
       // To trigger an action we use dispatch, which is similiar to commit but for calling actions
       this.loading = true
-      store.dispatch('fetchProducts') // Because we set the action as a promise we can use the promise here
+      this.$store.dispatch('fetchProducts') // Because we set the action as a promise we can use the promise here
         .then(() => this.loading = false)
     }
 

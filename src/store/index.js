@@ -9,8 +9,10 @@ export default new Vuex.Store({
   },
 
   getters: { // Computed properties
-    productsCount () {
-      // Count the length of the products array
+    // Perfect for filter or calculate something in runtime
+    // Getter track dependencies and change when a dependency change
+    availableProducts(state, getters){ // getters are all the existing getters
+      return state.products.filter((product => product.inventory > 0))
     }
   },
 

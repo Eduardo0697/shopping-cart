@@ -6,7 +6,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: { // Equivalent to data
-    products: []
+    products: [],
+    // {id, quantity}
+    cart: []
   },
 
   getters: { // Computed properties
@@ -43,6 +45,19 @@ export default new Vuex.Store({
     //     // Show out of stock message
     //   }
     // }
+    addProductToCart(context, product){
+      if(product.inventory > 0){
+        const cartItem = context.state.cart.find(item => item.id === product.id)
+        if(!cartItem){
+          // pushProductToCart
+          context.commit('pushProductToCart', product.id)
+        }else{
+          // incrementItemQuantity
+          context.commit('incrementItemQuantity', cartItem)
+        }
+      context.commit('decrementProductInventory', product)
+      }
+    }
 
   },
 
@@ -51,8 +66,21 @@ export default new Vuex.Store({
     setProducts(state, products) { // Parameters state and payload, in this case the payload is the products
       // Update products
       state.products = products
+    },
+
+    pushProductToCart(state, productId){
+      state.cart.push({
+        id: productId,
+        quantity: 1
+      })
+    },
+    incrementItemQuantity(state, cartItem){
+      cartItem.quantity++
+    },
+    decrementProductInventory(state, product){
+      product.inventory--
     }
-  }
+  },
 
 });
 

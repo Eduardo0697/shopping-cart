@@ -3,7 +3,10 @@
     <h1>Product List</h1>
     <img v-if="loading" src="https://i.imgur.com/JfPpwOA.gif">
     <ul v-else>
-      <li v-for="product in products">{{ product.title }} - {{ product.price }}</li>
+      <li v-for="product in products">
+        {{ product.title }} - {{ product.price }} - {{ product.inventory }}
+        <button @click="addProductToCart(product)">Add to cart</button>
+      </li>
     </ul>
   </div>
 
@@ -23,6 +26,11 @@
         return this.$store.getters.availableProducts
       }
     },
+    methods:{
+      addProductToCart(product){
+        this.$store.dispatch('addProductToCart', product)
+      }
+    },
     created() {
       // shop.getProducts( products => {
       //   // store.state.products = products // We should never update the state like this without commit a mutation
@@ -31,9 +39,13 @@
       // })
 
       // To trigger an action we use dispatch, which is similiar to commit but for calling actions
-      this.loading = true
-      this.$store.dispatch('fetchProducts') // Because we set the action as a promise we can use the promise here
-        .then(() => this.loading = false)
+      this.loading = true;
+      const context = this;
+      setTimeout( () => {
+        context.$store.dispatch('fetchProducts') // Because we set the action as a promise we can use the promise here
+          .then(() => this.loading = false)
+      }, 500)
+
     }
 
   }

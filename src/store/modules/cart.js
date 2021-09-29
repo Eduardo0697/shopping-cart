@@ -5,7 +5,8 @@ export default {
   state: {
     // {id, quantity}
     items: [],
-    checkoutStatus : null  },
+    checkoutStatus : null
+  },
   getters: {
     cartProducts(state, getters, rootState, rootGetters){
       return state.items.map(cartItem => {

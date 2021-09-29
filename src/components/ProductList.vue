@@ -17,24 +17,39 @@
 <script>
   // import shop from "../api/shop.js"
   // import store from "../store/index.js"
+  import { mapState, mapGetters, mapActions } from "vuex"
   export default {
     data(){
       return{
-        loading: false
+        loading: false,
+        // productIndex: 1
       }
     },
+    // computed: mapState({
+    //   // allProducts: 'products',
+    //   // We can also use functions as values of a string
+    //   products: state => state.products,
+    //   // firstProduct: state => state.products[0],
+    //   // specificProduct: (state) => {
+    //   //   return state.products[this.productIndex]
+    //   // }
+    // }),
     computed: {
-      products () {
-        return this.$store.state.products
-      },
-      productsIsInStock(){
-        return this.$store.getters.productsIsInStock
-      }
+      ...mapState({
+        products: state => state.products
+      }),
+      ...mapGetters({
+        productsIsInStock: 'productsIsInStock'
+      }),
     },
     methods:{
-      addProductToCart(product){
-        this.$store.dispatch('addProductToCart', product)
-      }
+      ...mapActions({
+        fetchProducts: 'fetchProducts',
+        addProductToCart: 'addProductToCart'
+      }),
+      // addProductToCart(product){
+      //   this.$store.dispatch('addProductToCart', product)
+      // }
     },
     created() {
       // shop.getProducts( products => {
@@ -47,7 +62,9 @@
       this.loading = true;
       const context = this;
       setTimeout( () => {
-        context.$store.dispatch('fetchProducts') // Because we set the action as a promise we can use the promise here
+        // context.$store.dispatch('fetchProducts') // Because we set the action as a promise we can use the promise here
+        //   .then(() => this.loading = false)
+        context.fetchProducts()
           .then(() => this.loading = false)
       }, 500)
 

@@ -8,21 +8,36 @@
     </ul>
     <p>Total: {{ total | currency }}</p>
 <!--    If the checkout fails, we could return a promise from the checkout action in order to show a modal-->
-    <button @click="$store.dispatch('checkout')">Checkout</button>
-    <p v-if="$store.state.checkoutStatus">{{ $store.state.checkoutStatus }}</p>
+    <button @click="checkout">Checkout</button>
+    <p v-if="checkoutStatus">{{ checkoutStatus }}</p>
   </div>
 
 </template>
 
 <script>
+  import { mapState, mapGetters, mapActions } from "vuex"
   export default {
     computed: {
-      products(){
-        return this.$store.getters.cartProducts
-      },
-      total(){
-        return this.$store.getters.cartTotal
-      }
+      ...mapGetters({
+        products: 'cartProducts',
+        total: 'cartTotal'
+      }),
+      ...mapState({
+        checkoutStatus: 'checkoutStatus'
+      })
+    },
+    // computed: {
+    //   products(){
+    //     return this.$store.getters.cartProducts
+    //   },
+    //   total(){
+    //     return this.$store.getters.cartTotal
+    //   }
+    // }
+    methods:{
+      ...mapActions({
+        checkout: 'checkout'
+      })
     }
 
   }

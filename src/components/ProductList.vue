@@ -38,14 +38,14 @@
       ...mapState({
         products: state => state.products.items
       }),
-      ...mapGetters({
+      ...mapGetters('products', {
         productsIsInStock: 'productsIsInStock'
       }),
     },
     methods:{
       ...mapActions({
-        fetchProducts: 'fetchProducts',
-        addProductToCart: 'addProductToCart'
+        fetchProducts: 'products/fetchProducts',
+        addProductToCart: 'cart/addProductToCart'
       }),
       // addProductToCart(product){
       //   this.$store.dispatch('addProductToCart', product)

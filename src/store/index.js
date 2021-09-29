@@ -35,7 +35,14 @@ export default new Vuex.Store({
       // });
       // return total
       return getters.cartProducts.reduce((total, product) => total + product.price * product.quantity, 0)
+    },
+    productsIsInStock() {
+      // We are returning a function to pass parameters to the getters, since getter dont accept parameters by default
+      return (product) => {
+        return product.inventory > 0
+      }
     }
+
   },
 
   actions: { // Methods
@@ -64,17 +71,17 @@ export default new Vuex.Store({
     //     // Show out of stock message
     //   }
     // }
-    addProductToCart(context, product){
-      if(product.inventory > 0){
-        const cartItem = context.state.cart.find(item => item.id === product.id)
+    addProductToCart({ state, getters, commit }, product){
+      if(getters.productsIsInStock(product)){
+        const cartItem = state.cart.find(item => item.id === product.id)
         if(!cartItem){
           // pushProductToCart
-          context.commit('pushProductToCart', product.id)
+          commit('pushProductToCart', product.id)
         }else{
           // incrementItemQuantity
-          context.commit('incrementItemQuantity', cartItem)
+          commit('incrementItemQuantity', cartItem)
         }
-      context.commit('decrementProductInventory', product)
+      commit('decrementProductInventory', product)
       }
     },
     checkout({state, commit}){

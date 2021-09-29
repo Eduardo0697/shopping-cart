@@ -23,7 +23,7 @@
         total: 'cartTotal'
       }),
       ...mapState({
-        checkoutStatus: 'checkoutStatus'
+        checkoutStatus: state => state.cart.checkout
       })
     },
     // computed: {

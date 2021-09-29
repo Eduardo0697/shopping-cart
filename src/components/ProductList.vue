@@ -36,7 +36,7 @@
     // }),
     computed: {
       ...mapState({
-        products: state => state.products
+        products: state => state.products.items
       }),
       ...mapGetters({
         productsIsInStock: 'productsIsInStock'
